@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  # SSL Certificate Generator
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    command: certonly --standalone --quiet -d ${XUI_CERTBOT_DOMAIN} --agree-tos --email ${XUI_CERTBOT_EMAIL}
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - ../.env
+    volumes:
+      - ./certs/:/etc/letsencrypt/live/
+      - ./letsencrypt/etc/:/etc/letsencrypt
+      - ./letsencrypt/var/lib/:/var/lib/letsencrypt
+      - ./letsencrypt/var/log/:/var/log/letsencrypt
+
+  # Management Panel
+  xui:
+    container_name: xui
+    image: registry.atrin-hojjat.com/powerslave/server-loader/x-ui:beta
+    restart: unless-stopped
+    depends_on:
+      - certbot
+    volumes:
+        - ./db/:/etc/x-ui
+        - ./certs/:/root/certs
+        - ./letsencrypt/etc/:/root/
+        - /etc/letsencrypt/live/:/root/en-certs/
+    network_mode: host
