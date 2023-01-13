@@ -37,3 +37,15 @@ Automated deployment of Trojan VPN protocol on X-UI using Docker
 
 ### Creating Inbounds
 1. Login to your X-UI dashboard and navigate to *inbounds* section.
+2. Create a connection with the following configs (replace *{DOMAIN}* with your own):
+    - Protocol: **Trojan**
+    - Transmission: **TCP**
+    - [x] XTLS: checked!
+    - Domain name: {DOMAIN}
+    - Certificate.crt file path: **/root/certs/{DOMAIN}/fullchain.pem**
+    - Private.key file path:
+    - Certificate.crt file path: **/root/certs/{DOMAIN}/privkey.pem**
+    - [x] Sniffing: checked!
+3. A random port will be assigned to any incoming record you create, but it's not accessible because we have a firewall. You have two choices:
+    - (difficault, but secure) For any incoming record you make, allow the port through firewall with `sudo ufw allow {PORT}/tcp`.
+    - (easy-peasy, but not secure) Disable firewall with `sudo ufw disable` and add any number of ports you want.
