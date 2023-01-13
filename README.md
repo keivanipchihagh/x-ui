@@ -13,11 +13,8 @@ Automated deployment of Trojan VPN protocol on X-UI using Docker
     2. `sudo ufw default deny incoming`
     3. `sudo ufw default allow outgoing`
     5. `sudo ufw allow ssh` - Allow SSH connections!
-2. Allow `http` and `https` connections through your firewall:
-    1. `sudo ufw allow http`
+    6. `sudo ufw allow http`
     2. `sudo ufw allow https`
-    3. `sudo ufw allow 54321/tcp` - Allow XUI webserver
-    4. `sudo ufw allow 12345/tcp` - Allow XUI inbound connections
 
 ### Installing Docker
 1. Install Docker engine: `curl -fsSL https://get.docker.com | sh`
@@ -32,3 +29,11 @@ Automated deployment of Trojan VPN protocol on X-UI using Docker
     DOMAIN=vsubdomain.domain.something
     EMAIL=example@test.com
     ```
+2. Make sure port **80** is free; If not, disabled anything using temporarily and enabled it after step 3.
+3. Run the following script `bash build.sh` that does the followings:
+    1. Generate an SSL certificate using [certbot](https://certbot.eff.org/) which is stored at `./certs/{DOMAIN}/`
+    2. Boot the X-UI panel on port 54321 with the default username and password set to **admin**. We will change it later..
+4. To access X-UI webserver from your browser run `sudo ufw allow 54321/tcp`.
+
+### Creating Inbounds
+1. Login to your X-UI dashboard and navigate to *inbounds* section.
