@@ -10,11 +10,11 @@ I'll explain how to setup the popular "*Trojan+XTLS+DNS+TCP*" stack that has wor
 4. Create a DNS record that maps a subdomain of your choice to your server IPv4 and **uncheck** proxied (meaning no CDN!). Changes can take up to an hour to settle in.
 
 ## 🪖 A little security won't hurt
-I appriciate the extra security measures on my server, so I'll setup a minimal firewall. If yours is not enabled (check via `sudo ufw status`), run the following command to set it up: `nano setup-ufw.sh`
+I appriciate the extra security measures on my server, so I'll setup a minimal firewall. If yours is not enabled (check via `sudo ufw status`), run the following command to set it up: `sudo bash setup-ufw.sh`
 
 This would setup UFW with default policies and allow **http**, **https** and **ssh** through.
 > **Warning**
-> The above script will reset your UFW! Don't run it if you already have rules on your UFW.
+> The above script will reset your existing UFW policies! Don't run it if you already have configured the firewall.
 
 ## 🐳 Run it in Docker!
 You should always use Docker for setting up your VPNs, because they can and will change network settings that can be hard to roleback. Install Docker by running the following script: `sudo bash setup-docker.sh`
@@ -43,10 +43,9 @@ EMAIL=freedom@gmail.com
     - [x] XTLS: `checked!`
     - Domain name: `freedom.example.com (Change to yours!)`
     - Certificate.crt file path: `/root/certs/fullchain.pem`
-    - Private.key file path:
-    - Certificate.crt file path: `/root/certs/privkey.pem`
+    - Private.key file path: `/root/certs/privkey.pem`
     - [x] Sniffing: `checked!`
-3. A random port will be assigned each time you create an inbound, but it's not accessible since it's not allowrd in our firewall. For any client you create, allow it through your firewall using `sudo ufw allow {PORT}/tcp`.
+3. A random port will be assigned each time you create an inbound, but it's not accessible since we haven't allowed it in the firewall. For any client you create, allow it through your firewall using `sudo ufw allow {PORT}/tcp` (or use *udp* depending on your configurations).
 
 > **Note**
 > Login by the domain you created in step one (e.g. *freedom.example.com:54321*) and avoid using dashboard by IP. It matters and don't ask why...
@@ -56,7 +55,7 @@ Congratulations! But we are not done yet..
 - X-UI can be buggy at times! double check every config you set.
 - Which protocol to use is up to you! Try several and find which works best in your area.
 - Not working on some ISPs? Could use **IPv6** if you know how😎. Nobody will look for you there...
-- Want to hide your IP? Use **Nginx+CDN** and relay traffic to **port 443** to make it more daring detect you! It's gonna be tricky though.
+- Want to hide your IP? Use **Nginx+CDN** and relay traffic to **port 443** to make it more challenging to detect you!
 
 ## 🤝 Issues and Contributions
-Feel free to ask your questions by opening an [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new).
+Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) and add features by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
