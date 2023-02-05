@@ -1,60 +1,62 @@
 # xui-trojan
-I'll explain how to setup the popular Trojan+XTLS+DNS+TCP configuration that has worked fine up to now, but the same procedure applies for any other combinations.
+I'll explain how to setup the popular "*Trojan+XTLS+DNS+TCP*" stack that has worked seamlessly for months.
+> **Note**
+> You can also use other protocols like **VLESS** and **VMESS**. To my experience, **VLESS** is faster while **Trojan** is the more secure.
 
-## Steps
+## 💫 First things first
+1. Make sure you have a solid domain (use "**.ir**" if you want things to get more interesting😉).
+2. Buy a server that is located outside our beloved country (I suggest [Digital Ocean](https://digitalocean.com/) for its many choices of locations).
+3. Create a [Cloudfare](https://cloudflare.com/) account and set Clourflare's NS records on your domain (Changes may take 1-24 hours for your NS records to apply! track domain availability with [dnshealth](https://dnschecker.org/)).
+4. Create a DNS record that maps a subdomain of your choice to your server IPv4 and **uncheck** proxied (meaning no CDN!). Changes can take up to an hour to settle in.
 
-### Before we begin
-1. Make sure you have a solid domain, a server anywhere **outside our beloved country** and a [Cloudfare](https://cloudflare.com/) account with configured DNS records on your domain and server IP.
-2. Create a DNS record with a subdomain of your choice and leave everything else an default except for the CDN! Make sure the *proxied* is unchecked! (changes can take up to 24h to settle in, check availability with [intodns](https://intodns.com/)).
+## 🪖 A little security won't hurt
+I appriciate the extra security measures on my server, so I'll setup a minimal firewall. If yours is not enabled (check via `sudo ufw status`), run the following command to set it up: `nano setup-ufw.sh`
 
-### Setting up UFW (Uncomplicated Firewall)
-I enjoy the extra security measures on my server, so I'll have the firewall enabled. If yours is not (check via `sudo ufw status`), run the following commands to bring it up with default policies:
-1. `sudo ufw enable`
-2. `sudo ufw default deny incoming`
-3. `sudo ufw default allow outgoing`
-5. `sudo ufw allow ssh` - Don't forget to allow SSH connections!
-6. `sudo ufw allow http`
-7. `sudo ufw allow https`
+This would setup UFW with default policies and allow **http**, **https** and **ssh** through.
+> **Warning**
+> The above script will reset your UFW! Don't run it if you already have rules on your UFW.
 
-### Installing Docker
-1. Install Docker engine: `curl -fsSL https://get.docker.com | sh`
-2. Add Docker to *sudo* group:
-    1. `sudo groupadd docker`
-    2. `sudo usermod -aG docker $USER`
-3. Logout and Login to apply chanages.
+## 🐳 Run it in Docker!
+You should always use Docker for setting up your VPNs, because they can and will change network settings that can be hard to roleback. Install Docker by running the following script: `sudo bash setup-docker.sh`
 
-### Setting up SSL certificate & X-UI
-1. Create a `.env` file with the following contents (Change them accordingly!):
-    ```python
-        DOMAIN=vsubdomain.domain.something
-        EMAIL=example@test.com
-    ```
-2. For the [certbot](https://certbot.eff.org/) to work on its container, port **80** must be free. If it's not, disabled anything using it temporarily and enabled it after step 3.
-3. Run the following command `bash build.sh` that does the followings:
-    1. Generate a SSL certificate using [certbot](https://certbot.eff.org/) which is stored at `./certs/{DOMAIN}/`
-    2. Boot the X-UI panel on port 54321 with the default username and password set to **admin**. Change it later..
-4. Make sure you certificates are created in `./certs/{DOMAIN}/` and don't go any further if they didn't. Read logs from `./letsencrypt/var/logs/` to find the problem.
-5. To allow X-UI thorugh your firewall run `sudo ufw allow 54321/tcp`.
+That would isntall **Docker**, **docker-compose** and add *sudo* privileges to both for ease of use.
 
-### Creating Inbounds
+## 🚀 Create a SSL Certificate and X-UI dashboard
+1. Create a `.env` file and set environmental variables accordingly (change them to your domain and email):
+```python
+DOMAIN=freedom.example.com
+EMAIL=freedom@gmail.com
+```
+2. Temporarily, stop anything running on **port 80** since we need that to be free for this step.
+3. Run the build script using `sudo bash build.sh` to generate a SSL certificate with **certbot** and build X-UI container.
+> **Note**
+> The X-UI dashboard is reachable by port *54321*. Use *freedom.example.com:54321* from our example to access it.
+
+> **Warning**
+> The default username and password are "**admin**". Change them or your clients can also access your dashboard (if they are smart enough😎).
+
+## 📬 Creating Inbounds
 1. Login to your X-UI dashboard and navigate to *inbounds* section.
-2. Create a connection with the following configs (replace *{DOMAIN}* with your own):
-    - Protocol: **Trojan**
-    - Transmission: **TCP**
-    - [x] XTLS: checked!
-    - Domain name: {DOMAIN}
-    - Certificate.crt file path: **/root/certs/{DOMAIN}/fullchain.pem**
+2. Create a connection with the following configs:
+    - Protocol: `Trojan`, `VMESS` or `VLESS`
+    - Transmission: `TCP`
+    - [x] XTLS: `checked!`
+    - Domain name: `freedom.example.com (Change to yours!)`
+    - Certificate.crt file path: `/root/certs/fullchain.pem`
     - Private.key file path:
-    - Certificate.crt file path: **/root/certs/{DOMAIN}/privkey.pem**
-    - [x] Sniffing: checked!
-3. A random port will be assigned each time you create record, but it's not accessible due firewall blockage. For any client you create, allow it through your firewall using `sudo ufw allow {PORT}/tcp`.
+    - Certificate.crt file path: `/root/certs/privkey.pem`
+    - [x] Sniffing: `checked!`
+3. A random port will be assigned each time you create an inbound, but it's not accessible since it's not allowrd in our firewall. For any client you create, allow it through your firewall using `sudo ufw allow {PORT}/tcp`.
 
-## Notes worth mentioning
-- Changes made to your DNS records can sometimes take time take place (up to 24h). Have patience.
-- You can disable firewall and save yourself the pain of allowing each port throught it.
-- X-UI can be buggy at times! after you copy the client profile, double check the domain to be correct.
-- If Trojan protocol timed out, there might be a problem with you SSL certificate. Try a `VMESS` to confirm the issue.
-- Trojan+XTLS+DNS+TCP has proven bypass any filtering technologies, but do try different protocols and see what gives you the best experience.
+> **Note**
+> Login by the domain you created in step one (e.g. *freedom.example.com:54321*) and avoid using dashboard by IP. It matters and don't ask why...
+
+## ☃️ Build up from here
+Congratulations! But we are not done yet..
+- X-UI can be buggy at times! double check every config you set.
+- Which protocol to use is up to you! Try several and find which works best in your area.
+- Not working on some ISPs? Could use **IPv6** if you know how😎. Nobody will look for you there...
+- Want to hide your IP? Use **Nginx+CDN** and relay traffic to **port 443** to make it more daring detect you! It's gonna be tricky though.
 
 ## 🤝 Issues and Contributions
 Feel free to ask your questions by opening an [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new).
