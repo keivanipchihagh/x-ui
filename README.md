@@ -10,6 +10,7 @@ I'll explain how to setup the popular "*Trojan+XTLS+DNS+TCP*" stack that has wor
 - 🚀 Let the dashboard, Begin!
 - 🔐 Secure your dashboard with HTTPS
 - 📬 Create Inbounds / Benchmark
+- 👻 IPv6 is here!
 - ☃️ Build up from here
 - 🤝 Issues and Contributions
 
@@ -68,29 +69,29 @@ network:
     ethernets:
         eth0:
             addresses:
-            - 164.92.68.109/20
+            - PUBLIC_IPV4_ADDRESS/20
             - 10.48.0.9/16
             - PUBLIC_IPV6_ADDRESS/64
             match:
-                macaddress: 86:4d:f9:5e:7b:d2
+                macaddress: <HIDDEN>
             mtu: 1500
             nameservers:
                 addresses:
-                - 67.207.67.2
-                - 67.207.67.3
+                - <HIDDEN>
+                - <HIDDEN>
                 - IPV6_NAMESERVERS_1
                 - IPV6_NAMESERVERS_2
                 search: []
             routes:
             -   to: 0.0.0.0/0
-                via: 164.92.64.1
+                via: PUBLIC_IPV4_GATEWAY
             -   to: PUBLIC_IPV6_GATEWAY
                 scope: link
-            -   to: default
-                via: PUBLIC_IPV6_GATEWAY
-                on-link: true
             set-name: eth0
 ```
+
+> **Note**
+> Some parts have been hidden for my security, don't mind them. The above setup first goes for IPv4 and then IPv6.
 
 ## ☃️ Build up from here
 There are still a lot you could do to reinforce your VPN. For instance:
