@@ -35,6 +35,15 @@ EMAIL=freedom@gmail.com
 > **Warning**
 > The default username and password are "**admin**". Change them or your clients can also access your dashboard (if they are smart enough😎).
 
+## 🔐 Securing your dashboard with HTTPS
+You can always access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>`, but that leaves you unprotected. Do the followings to establish a HTTPS connection with your dashboard:
+1. On your [Cloudflare](https://cloudflare.com/) account, set the *SSL/TLS* level to `strict` and beyond.
+2. Navigate to **Panel Settings** and change these fields as followed:
+    - Panel certificate.crt file path: `/root/certs/fullchain.pem`
+    - Panel private.key file path: `/root/certs/privkey.pem`
+
+Now you can access your dashboard via `<DOMAIN>:<DASHBOARD-PORT>` which falls behind HTTPS.
+
 ## 📬 Creating Inbounds
 1. Login to your X-UI dashboard and navigate to *inbounds* section.
 2. Create a connection with the following configs:
