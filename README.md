@@ -4,36 +4,30 @@ I'll explain how to setup the popular "*Trojan+XTLS+DNS+TCP*" stack that has wor
 > You can also use other protocols like **VLESS** and **VMESS**. To my experience, **VLESS** is faster while **Trojan** is the more secure.
 
 ## 💫 First things first
-1. Make sure you have a solid domain (use "**.ir**" if you want things to get more interesting😉).
-2. Buy a server that is located outside our beloved country (I suggest [Digital Ocean](https://digitalocean.com/) for its many choices of locations).
-3. Create a [Cloudfare](https://cloudflare.com/) account and set Clourflare's NS records on your domain (Changes may take 1-24 hours for your NS records to apply! track domain availability with [dnshealth](https://dnschecker.org/)).
-4. Create a DNS record that maps a subdomain of your choice to your server IPv4 and **uncheck** proxied (meaning no CDN!). Changes can take up to an hour to settle in.
+1. Get a Domain, buy a Server and create a [Cloudflare](https://cloudflare.com/) account.
+2. Set NS records that points your domain to your server. (Changes can take 1-24 hours to apply!) Meanwhile, track domain availability with [dnshealth](https://dnschecker.org/)).
+3. Map a subdomain to server IP (Leave *proxied* unchecked!)
 
-## 🪖 A little security won't hurt
-I appriciate the extra security measures on my server, so I'll setup a minimal firewall. If yours is not enabled (check via `sudo ufw status`), run the following command to set it up: `sudo bash setup-ufw.sh`
+## 🪖 (Optional) Hold on to your Firewalls!
+I always enjoy the extra security on my servers. If you suffer from ADHD like I do (*LOL!*), there is an script for you! Run `setup-ufw.sh` to configure a minimal Firewall with default policies.
 
-This would setup UFW with default policies and allow **http**, **https** and **ssh** through.
 > **Warning**
-> The above script will reset your existing UFW policies! Don't run it if you already have configured the firewall.
+> If you enable Firewall, you have to allow each X-UI inbound through it!
 
-## 🐳 Run it in Docker!
-You should always use Docker for setting up your VPNs, because they can and will change network settings that can be hard to roleback. Install Docker by running the following script: `sudo bash setup-docker.sh`
+## 🐳 Run it with Docker! 
+I'm going to use [Docker](https://www.docker.com/), because it's clean and leaves no trace. You can remove the container like nothing ever happened. Install it by running the `setup-docker.sh` script.
 
-That would isntall **Docker**, **docker-compose** and add *sudo* privileges to both for ease of use.
-
-## 🚀 Create a SSL Certificate and X-UI dashboard
-1. Create a `.env` file and set environmental variables accordingly (change them to your domain and email):
-```python
-DOMAIN=freedom.example.com
-EMAIL=freedom@gmail.com
-```
-2. Temporarily, stop anything running on **port 80** since we need that to be free for this step.
-3. Run the build script using `sudo bash build.sh` to generate a SSL certificate with **certbot** and build X-UI container.
 > **Note**
-> The X-UI dashboard is reachable by port *54321*. Use *freedom.example.com:54321* from our example to access it.
+> The script will install *Docker Engine*, *docker-compose* and add them to sudo group.
+
+## 🚀 Let the dashboard, Begin!
+1. There is a file called `.env.template` which containes two placeholders that you must adjust to yours, and then rename the file to `.env`.
+2. Make sure nothing is blocking port 80 until the end of this section. If there is, stop it temporarily.
+3. Run the `build.sh` script which generates a SSL certificate using **certbot** and deploy the X-UI container.
+4. Access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>` where the default dashboard port is `54321`.
 
 > **Warning**
-> The default username and password are "**admin**". Change them or your clients can also access your dashboard (if they are smart enough😎).
+> The default username and password for the dashboard are "**admin**". Change them immediately!
 
 ## 🔐 Securing your dashboard with HTTPS
 You can always access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>`, but that leaves you unprotected. Do the followings to establish a HTTPS connection with your dashboard:
