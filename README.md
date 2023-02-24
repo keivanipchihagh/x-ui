@@ -1,66 +1,66 @@
 # xui-trojan
-I'll explain how to setup the popular "*Trojan+XTLS+DNS+TCP*" stack that has worked seamlessly for months.
-> **Note**
-> You can also use other protocols like **VLESS** and **VMESS**. To my experience, **VLESS** is faster while **Trojan** is the more secure.
+I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https://en.wikipedia.org/wiki/Great_Firewall) like a knife through butter. If you like the project and found it helpful, please do star and share with others!
 
 ## Table of Contents
-- 💫 First things first
-- 🪖 (Optional) Hold on to your Firewalls!
-- 🐳 Run it with Docker!
-- 🚀 Let the dashboard, Begin!
-- 🔐 Secure your dashboard with HTTPS
-- 📬 Create Inbounds / Benchmark
-- 👻 IPv6 is here!
-- ☃️ Build up from here
-- 🤝 Issues and Contributions
+- 💫 [First things first](https://github.com/keivanipchihagh/x-ui#-first-things-first)
+- 🪖 [(Optional) Hold on to your Firewalls!](https://github.com/keivanipchihagh/x-ui#-optional-hold-on-to-your-firewalls)
+- 🐳 [Run it with Docker!](https://github.com/keivanipchihagh/x-ui#-run-it-with-docker)
+- 🚀 [Let the dashboard, Begin!](https://github.com/keivanipchihagh/x-ui#-let-the-dashboard-begin)
+- 🔐 [Secure your dashboard with HTTPS](https://github.com/keivanipchihagh/x-ui#-secure-your-dashboard-with-https)
+- 📬 [Create Inbounds / Benchmark](https://github.com/keivanipchihagh/x-ui#-create-inbounds--benchmark)
+- 👻 [IPv6 is here!](https://github.com/keivanipchihagh/x-ui#-ipv6-is-here)
+- ❄️ [Annoying ISPs?](https://github.com/keivanipchihagh/x-ui#-annoying-isps)
+- 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
 
 ## 💫 First things first
-1. Get a Domain, buy a Server and create a [Cloudflare](https://cloudflare.com/) account.
-2. Set NS records that points your domain to your server. Changes can take 1-24 hours to apply, so seat back and track domain availability with [dnshealth](https://dnschecker.org/).
-3. Map a subdomain to server IP (Leave *proxied* unchecked for now!)
+1. Get a Domain, buy a Server (with *minimum* hardware requirements) and create a [Cloudflare](https://cloudflare.com/) account.
+2. Map a subdomain record to your server IPv4 (Leave *proxied* unchecked!). This can take a few minutes to take effect.
+
+> **Note**
+> There is no need to set any NS records if you are only using the server as a VPN!
 
 ## 🪖 (Optional) Hold on to your Firewalls!
-I always enjoy the extra security on my servers. If you suffer from ADHD like I do (*LOL!*), there is an script for you! Run `setup-ufw.sh` to configure a minimal Firewall with default policies.
+I always enjoy the extra security on my servers. If you suffer from *ADHD* like I do (*LOL!*), there is an script for you! Run `setup-ufw.sh` to configure a minimal Firewall with default policies (allows ports **22**, **80** and **443**).
 
 > **Warning**
-> If you enable Firewall, you have to allow each X-UI inbound through it!
+> With firewall enabled, you must allow each X-UI inbound port in it, or you won't be able to connect!
 
 ## 🐳 Run it with Docker! 
-I'm going to use [Docker](https://www.docker.com/), because it's clean and leaves no trace. You can remove the container like nothing ever happened. Install it by running the `setup-docker.sh` script.
+I'm going to use [Docker](https://www.docker.com/), because it's clean and leaves no trace afterwards. You can remove the container at any time. Install Docker by running the `setup-docker.sh` script.
 
 > **Note**
 > The script will install *Docker Engine*, *docker-compose* and add them to sudo group.
 
 ## 🚀 Let the dashboard, Begin!
-1. There is a file called `.env.template` which containes placeholders for variables that you must chnage. Finally rename the file to `.env`.
-2. Make sure nothing is blocking port 80 until the end of this section. If there is, stop it temporarily.
-3. Run the `build.sh` script which generates a SSL certificate using **certbot** and deploys the X-UI container.
+1. There is a file called `.env.template` which containes placeholders for variables that you must change to your liking. Afterwards, rename the file to `.env`.
+2. Make sure nothing is blocking port **80** and **443** until the end of this section. If there is any process using it at the time, stop it temporarily.
+3. Run the `build.sh` script which generates a SSL certificate using **CertBot** and deploys the **X-UI** container.
 4. Access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>` where the default dashboard port is `54321`.
 
 > **Warning**
 > The default username and password for the dashboard are "**admin**". Change them immediately!
 
 ## 🔐 Secure your dashboard with HTTPS
-You can always access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>`, but that leaves you unprotected. Do the followings to establish a HTTPS connection with your dashboard:
-1. On your [Cloudflare](https://cloudflare.com/) account, set the *SSL/TLS* level to `strict` and beyond.
+You can always access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>`, but that's not good for your health 😉. Do the followings to enable a HTTPS on your dashboard:
+1. On your [Cloudflare](https://cloudflare.com/) account, set the *SSL/TLS* level to `strict` or beyond.
 2. Navigate to **Panel Settings** and change these fields as followed:
-    - Panel certificate.crt file path: `/root/certs/fullchain.pem`
-    - Panel private.key file path: `/root/certs/privkey.pem`
+    - Panel *certificate.crt* file path: `/root/certs/fullchain.pem`
+    - Panel *private.key* file path: `/root/certs/privkey.pem`
 
 Now you can access your dashboard via `<DOMAIN>:<DASHBOARD-PORT>` which falls behind HTTPS.
 
 ## 📬 Create Inbounds / Benchmark
 Create inbounds for your clients. Note the followings:
-- Stick with **XTLS** rather than **TLS** whenever possible.
-- Always add *"Certificate.crt"* and *"Private.key"* paths like the previous section.
-- **TCP** is faster while **Websocket** can be configured with CDN.
-- Uncheck *"Disable Insecure Connections"* for very old devices, keep it on otherwise. (Do it client side!)
+- Stick with **XTLS** rather than **TLS** if at all possible.
+- Always add *"Certificate.crt"* and *"Private.key"* paths to enable TLS.
+- Enable **Sniffing** if available.
+- Try to always disable insecure connections, but for old devices you might want to leave this be.
 
 > **Note**
-> If you have an active Firewall, you need to add each inbound port to it after creation!
+> **TCP** is generally faster (specially in an environment where GFW is dropping packets!), but **Websocket** can be configured behind CDN to hide your server IP.
 
 ## 👻 IPv6 is here!
-Does connecting through IPv6 really help pass the blockage? I have no idea, but using it won't hurnt (Although it adds a little overhead on the connection):
+Does enabling IPv6 really help pass the GFW blockage? Although there isn't any solid proof, I've seen it work sometimes! To do so:
 1. You need three pieces: `PUBLIC_IPV6_GATEWAY`, `PUBLIC_IPV6_ADDRESS` and `IPV6_NAMESERVERS`
 2. Modify `/etc/netplan/50-cloud-init.yaml` like the example below:
 ```yaml
@@ -91,11 +91,23 @@ network:
 ```
 
 > **Note**
-> Some parts have been hidden for my security, don't mind them. The above setup first goes for IPv4 and then IPv6.
+> Some parts have been hidden for my security, ignore them. The above setup first goes for IPv4 and then IPv6.
 
-## ☃️ Build up from here
-There are still a lot you could do to reinforce your VPN. For instance:
-- Want to hide your server IP? Hide behind a CDN.
+> **Warning**
+> Don't choose IPv6 as your first/default route, as many ISPs don't yet support it entirely!
+
+## ❄️ Annoying ISPs?
+So [GFW](https://en.wikipedia.org/wiki/Great_Firewall) can't shut you down, but it can still make you suffer! How? By doing [Packet Drop](https://geneva.cs.umd.edu/posts/fully-encrypted-traffic/en/) on traffic heading to the outside world. To overcome this, **v2ray** supports [Tunneling](https://traefik.io/glossary/network-tunneling/):
+1. Buy a server within the country, repeat the entire process of brining up X-UI on your new server.
+2. Replace the configurations from `bridge-server/config.json` with the existing `XRAY Configuration` on your X-UI dashboard settings.
+
+Tunneling looks like the following:
+```
+(You) <-> [ Bridge-Server ] <-> [ Upstream-Server ] <-> (Freedom)
+```
+
+> **Note**
+> Use a new subdomain for your bridge-server!
 
 ## 🤝 Issues and Contributions
 Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) and add features by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
