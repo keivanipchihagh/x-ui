@@ -1,4 +1,4 @@
-# xui-trojan
+# x-ui
 I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https://en.wikipedia.org/wiki/Great_Firewall) like a knife through butter. If you like the project and found it helpful, please do star and share with others!
 
 ## Table of Contents
@@ -7,9 +7,11 @@ I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https
 - 🐳 [Run it with Docker!](https://github.com/keivanipchihagh/x-ui#-run-it-with-docker)
 - 🚀 [Let the dashboard, Begin!](https://github.com/keivanipchihagh/x-ui#-let-the-dashboard-begin)
 - 🔐 [Secure your dashboard with HTTPS](https://github.com/keivanipchihagh/x-ui#-secure-your-dashboard-with-https)
-- 📬 [Create Inbounds / Benchmark](https://github.com/keivanipchihagh/x-ui#-create-inbounds--benchmark)
+- 📬 [Create Inbounds](https://github.com/keivanipchihagh/x-ui#-enrich-your-clients)
 - 👻 [IPv6 is here!](https://github.com/keivanipchihagh/x-ui#-ipv6-is-here)
-- ❄️ [Annoying ISPs?](https://github.com/keivanipchihagh/x-ui#-annoying-isps)
+- ❄️ [Annoying ISPs?](https://github.com/keivanipchihagh/x-ui#%EF%B8%8F-annoying-isps)
+- 🧱 [Hide behind CDN](https://github.com/keivanipchihagh/x-ui#-hide-behind-cdn)
+- 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#-benchmarks)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
 
 ## 💫 First things first
@@ -49,7 +51,7 @@ You can always access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>`, but tha
 
 Now you can access your dashboard via `<DOMAIN>:<DASHBOARD-PORT>` which falls behind HTTPS.
 
-## 📬 Create Inbounds / Benchmark
+## 📬 Enrich your clients
 Create inbounds for your clients. Note the followings:
 - Stick with **XTLS** rather than **TLS** if at all possible.
 - Always add *"Certificate.crt"* and *"Private.key"* paths to enable TLS.
@@ -108,6 +110,10 @@ Tunneling looks like the following:
 
 > **Note**
 > Use a new subdomain for your bridge-server!
+
+## 🧱 Hide behind CDN
+
+## 🎗️ Benchmarks
 
 ## 🤝 Issues and Contributions
 Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) and add features by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
