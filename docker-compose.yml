@@ -27,7 +27,7 @@ services:
   x-ui:
     <<: *common
     container_name: xui
-    image: registry.atrin-hojjat.com/powerslave/server-loader/x-ui:beta
+    image: enwaiax/x-ui:beta
     restart: unless-stopped
     depends_on:
         - certbot
