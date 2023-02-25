@@ -13,7 +13,7 @@ services:
   # SSL Certificate
   certbot:
     container_name: certbot
-    image: certbot/certbot
+    image: certbot/certbot:v1.29.0
     command: certonly --standalone --quiet -d ${DOMAIN} --agree-tos --email ${EMAIL}
     ports:
       - 80:80
@@ -21,22 +21,17 @@ services:
     env_file:
       - .env
     volumes:
-      - /etc/letsencrypt/live/${DOMAIN}/fullchain.pem:/etc/letsencrypt/live/${DOMAIN}/fullchain.pem
-      - /etc/letsencrypt/live/${DOMAIN}/privkey.pem:/etc/letsencrypt/live/${DOMAIN}/privkey.pem
-      - ./volume/letsencrypt/etc/:/etc/letsencrypt
-      - ./volume/letsencrypt/var/lib/:/var/lib/letsencrypt
-      - ./volume/letsencrypt/var/log/:/var/log/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt # Must mount the entire directory!
 
-  # Management Panel
-  xui:
+  # X-UI Dashboard
+  x-ui:
     <<: *common
     container_name: xui
-    image: registry.keivanipchihagh.com/x-ui:beta
+    image: registry.atrin-hojjat.com/powerslave/server-loader/x-ui:beta
     restart: unless-stopped
     depends_on:
-     - certbot
+        - certbot
     volumes:
         - ./volume/db/:/etc/x-ui
-        - /etc/letsencrypt/live/${DOMAIN}/fullchain.pem:/root/certs/fullchain.pem
-        - /etc/letsencrypt/live/${DOMAIN}/privkey.pem:/root/certs/privkey.pem
+        - /etc/letsencrypt/:/etc/letsencrypt # Must mount the entire directory!
     network_mode: host
