@@ -26,7 +26,7 @@ services:
   # X-UI Dashboard
   x-ui:
     <<: *common
-    container_name: xui
+    container_name: x-ui
     image: enwaiax/x-ui:beta
     restart: unless-stopped
     depends_on:
