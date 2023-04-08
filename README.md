@@ -113,13 +113,21 @@ So [GFW](https://en.wikipedia.org/wiki/Great_Firewall) can't shut you down, but 
 
 
 ## 🚅 Faster TCPs
-To make your TCP connections faster, apply Google's congestion algorithm to your system:
+Using Google's upgraded congestion control algorithms will slightly improve your *TCP* connections speed. To apply it on your system, run the following commands:
 ```bash
 $ wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh
 $ bash bbr.sh
 ```
 
 ## 🧱 Hide behind CDN
+This part is tricky! Make sure your VPN does indeed work **before** following the next procedure:
+1. Create a new inbound with the following configurations:
+    - Protocol: `vmess` or `vless`
+    - Port: preferably `443` (default HTTPS port)
+    - Transmission: `ws`
+    - Turn on TLS, fill *domain* and certification files like before
+2. Turn on proxied on Cloudflare (CDN)
+3. Wait about a minute or two for it to process. You can check if changes are applyed pinging your subdomain and notice your real server IP is now hidden!
 
 ## 🎗️ Benchmarks
 
