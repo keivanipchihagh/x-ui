@@ -10,6 +10,7 @@ I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https
 - 📬 [Create Inbounds](https://github.com/keivanipchihagh/x-ui#-enrich-your-clients)
 - 👻 [IPv6 is here!](https://github.com/keivanipchihagh/x-ui#-ipv6-is-here)
 - ❄️ [Using Bridge Server](https://github.com/keivanipchihagh/x-ui#-using-bridge-server)
+- 🚅 [Faster TCPs](https://github.com/keivanipchihagh/x-ui#-faster-tcps)
 - 🧱 [Hide behind CDN](https://github.com/keivanipchihagh/x-ui#-hide-behind-cdn)
 - 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#-benchmarks)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
@@ -109,6 +110,14 @@ So [GFW](https://en.wikipedia.org/wiki/Great_Firewall) can't shut you down, but 
 
 > **Note**
 > You need another subdomain to use for your bridge-server, but with no CDN! (This is quite important)
+
+
+## 🚅 Faster TCPs
+To make your TCP connections faster, apply Google's congestion algorithm to your system:
+```bash
+$ wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh
+$ bash bbr.sh
+```
 
 ## 🧱 Hide behind CDN
 
