@@ -116,7 +116,7 @@ So [GFW](https://en.wikipedia.org/wiki/Great_Firewall) can't shut you down, but 
 ## 🚅 Faster TCPs
 Using Google's upgraded congestion control algorithms will slightly improve your *TCP* connections speed. To apply it on your system, run the following commands:
 ```bash
-$ bash bbr.sh
+$ bash scripts/bbr.sh
 ```
 
 ## 🧱 Hide behind CDN
