@@ -21,7 +21,7 @@ I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https
 2. Map a subdomain to your server IPv4 (Leave proxied *unchecked!*). This can take a few minutes to take effect.
 
 > **Note**
-> There is no need to set any NS records if you are only using the server as a VPN!
+> There is no need to set any NS records if you are only using the server as a VPN.
 
 ## 🪖 (Optional) Hold on to your Firewalls!
 I always enjoy the extra security on my servers. If you suffer from *ADHD* like I do (*LOL!*), there is an script for you! Run `scripts/setup-ufw.sh` to configure a minimal Firewall with default policies (allows ports **22**, **80**, **443** and *54321* for X-UI).
@@ -40,6 +40,9 @@ I'm going to use [Docker](https://www.docker.com/), because it's clean and leave
 2. Make sure nothing is blocking port **80** and **443** until the end of this section. If there is any process using it at the time, stop it temporarily.
 3. Run the `build.sh` script which generates a SSL certificate using [CertBot](https://certbot.eff.org/) and deploys the **X-UI** container.
 4. Access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>` where the default dashboard port is `54321`.
+
+> **Warning**
+> SSL certificate generation will fail if the **DOMAIN** in `.env` does not match the one setup in Cloudflare!
 
 > **Warning**
 > The default username and password for the dashboard are "**admin**". Change them immediately!
@@ -64,9 +67,10 @@ Create inbounds for your clients. Note the followings:
 > **TCP** is generally faster (specially in an environment where GFW is dropping packets!), but **Websocket** can be configured behind CDN to hide your identity.
 
 ## 👻 IPv6 is here!
-Does enabling IPv6 really help pass the GFW blockage? Although there isn't any solid proof, I've seen it work sometimes! To do so:
+Does IPv6 enable you to connect on spesific ISPs? It very much does!
 1. You need three pieces: `PUBLIC_IPV6_GATEWAY`, `PUBLIC_IPV6_ADDRESS` and `IPV6_NAMESERVERS`
-2. Modify `/etc/netplan/50-cloud-init.yaml` like the example below:
+2. Set your servers `PUBLIC_IPV6_ADDRESS` into Cloudflare and point it to your **DOMAIN**.
+3. Modify `/etc/netplan/50-cloud-init.yaml` like the example below (I had some other stuff here as well which you can ignore):
 ```yaml
 network:
     version: 2
