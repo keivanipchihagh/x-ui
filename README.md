@@ -14,6 +14,7 @@ I'll explain how to setup the popular *v2ray* platform to bypass any [GFW](https
 - 🧱 [Hide behind CDN](https://github.com/keivanipchihagh/x-ui#-hide-behind-cdn)
 - 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#-benchmarks)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
+- 📖 [Credits](https://github.com/keivanipchihagh/x-ui#-credits)
 
 ## 💫 First things first
 1. Get a Domain, buy a Server (with *minimum* hardware requirements) and create a [Cloudflare](https://cloudflare.com/) account.
@@ -115,7 +116,6 @@ So [GFW](https://en.wikipedia.org/wiki/Great_Firewall) can't shut you down, but 
 ## 🚅 Faster TCPs
 Using Google's upgraded congestion control algorithms will slightly improve your *TCP* connections speed. To apply it on your system, run the following commands:
 ```bash
-$ wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh
 $ bash bbr.sh
 ```
 
@@ -136,3 +136,7 @@ This part is tricky! Make sure your VPN does indeed work **before** following th
 
 ## 🤝 Issues and Contributions
 Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) and add features by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
+
+## 📖 Credits
+- [BBR Script](https://github.com/teddysun/across)
+- [X-UI Image](https://hub.docker.com/r/enwaiax/x-ui)
