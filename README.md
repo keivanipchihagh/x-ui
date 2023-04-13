@@ -125,13 +125,14 @@ $ bash scripts/bbr.sh
 
 ## 🧱 Hide behind CDN
 This part is tricky! Make sure your VPN does indeed work **before** following the next procedure:
-1. Create a new inbound with the following configurations:
+1. On Cloudflare, turn on *Strict SSL/TLS*
+2. Create a new inbound with the following configurations:
     - Protocol: `vmess` or `vless`
     - Port: preferably `443` (default HTTPS port)
     - Transmission: `ws`
     - Turn on TLS, fill *domain* and certification files like before
-2. Turn on proxied on Cloudflare (CDN)
-3. Wait about a minute or two for it to process. You can check if changes are applyed pinging your subdomain and notice your real server IP is now hidden!
+3. Turn on proxied on Cloudflare (CDN)
+4. Wait about a minute or two for it to process. You can check if changes are applyed pinging your subdomain and notice your real server IP is now hidden!
 
 > **Warning**
 > **TCP** and **UDP** protocols no longer work with CDN enabled, as CDN is a streaming service! Use only *Websocket*.
