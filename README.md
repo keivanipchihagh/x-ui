@@ -129,6 +129,9 @@ This part is tricky! Make sure your VPN does indeed work **before** following th
 2. Turn on proxied on Cloudflare (CDN)
 3. Wait about a minute or two for it to process. You can check if changes are applyed pinging your subdomain and notice your real server IP is now hidden!
 
+> **Note**
+> You can ONLY use websocket protocol with CDN! Typical TCP and UDPs don't work with CDN enabled.
+
 ## 🎗️ Benchmarks
 
 ## 🤝 Issues and Contributions
