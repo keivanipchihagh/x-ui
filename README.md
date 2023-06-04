@@ -2,7 +2,7 @@
 I'll explain how to setup the popular **v2ray** platform to bypass *almost* any [GFW](https://en.wikipedia.org/wiki/Great_Firewall) like a knife through butter. If you like the project and found it helpful, please do star and share with others!
 
 > **Note**
-> The following instructions require some technical background on Linux, Docker, Certificates and some concepts about VPNs in general. If you have any questions or suggestions, feel free to open an [Issue](https://github.com/keivanipchihagh/x-ui/issues/new) or a Pull request.
+> The following instructions require some technical background on Linux, Docker, Certificates and some concepts about networking and VPNs in general. If you have any questions or suggestions, feel free to open an [Issue](https://github.com/keivanipchihagh/x-ui/issues/new) or a Pull request.
 
 ## Table of Contents
 - 💫 [First things first](https://github.com/keivanipchihagh/x-ui#-first-things-first)
@@ -15,8 +15,9 @@ I'll explain how to setup the popular **v2ray** platform to bypass *almost* any 
 - ❄️ [(Optional) Tunneling](https://github.com/keivanipchihagh/x-ui#-tunneling)
 - 🚅 [Faster TCPs](https://github.com/keivanipchihagh/x-ui#-faster-tcps)
 - 🧱 [Take Cover behind CDN](https://github.com/keivanipchihagh/x-ui#-take-cover-behind-cdn)
-- 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#-benchmarks)
+- ⚒️ [Goodby CDN, Hello CFW](https://github.com/keivanipchihagh/x-ui#-goodbye-cdn-hello-cfw)
 - ❓ [Q&A](https://github.com/keivanipchihagh/x-ui#-qa)
+- 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#-benchmarks)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
 - 📖 [Credits](https://github.com/keivanipchihagh/x-ui#-credits)
 
@@ -149,8 +150,16 @@ Make sure your VPN does indeed work before following the next procedure:
 3. On Cloudflare, turn on proxied for both IPv4 and IPv6.
 4. Ping your `<DOMAIN>` and see if the IP changes. This can take a few minutes to settle in.
 
-## 🎗️ Benchmarks
-I'm too old for this shit.
+## ⚒️ Goodby CDN, Hello CFW
+CDNs are great, they really are, but CFW (aka. [Cloudflare Workers](https://workers.cloudflare.com/)) are newer and more scalable Cloudflare's solution to replace CDNs.
+
+1. Create a worker from [here](https://workers.cloudflare.com/).
+2. Copy and modify the script `cfw.js` to your worker. Deploy it.
+3. Optionally, to hide your worker address, connect your Worker to a custom domain. (Can take a few hours to take effect)
+4. Modify your client config by replacing the `address`, `SNI` and `request host`, with your worker address and your port to **443**. (If you have a custom domain from step 3, use it instead of the worker address)
+
+> **Note**
+> Cloudflare supports more ports (80, 443, 2052, 2053, 2082, 2083, 2086, 2087, 2095, 2096, 8080, 8443, 8880) that you can use to forward your traffic to X-UI (remember could only use *443* for CDN).
 
 ## ❓ Q&A
 ### What does GFW do behind the scene?
@@ -159,6 +168,9 @@ They do [Packet Drop](https://geneva.cs.umd.edu/posts/fully-encrypted-traffic/en
 Two simple reasons. First, GFWs are more interested in the traffic heading outside the country. By tunneling, your traffic moves internally half the way. Second, Data Centers are off limit for GFWs, because there are hundreds or thousands of servers running in them that belong to big-ass companies! They wouldn't want to mess with that, huh? If your server is within the same data center as those companies, you get the VIP luxury of high speed and no GFW 🚬😎
 ### Why doesn't GFWs block Cloudflare?
 Almost all companies are using Cloudflare now. Blocking you will block them as well! However, this doesn't mean not messing around with Cloudflare traffic.
+
+## 🎗️ Benchmarks
+I'm too old for this shit.
 
 ## 🤝 Issues and Contributions
 Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) or add your creative ideas by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
