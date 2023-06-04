@@ -20,6 +20,7 @@ I'll explain how to setup the popular **v2ray** platform to bypass *almost* any 
 - 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#%EF%B8%8F-benchmarks)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
 - 📖 [Credits](https://github.com/keivanipchihagh/x-ui#-credits)
+- 🍩 [Donate](https://github.com/keivanipchihagh/x-ui#-donate)
 
 ## 💫 First things first
 1. You need a *domain*! You can purchase one from [parspack](https://parspack.com/), [parshost](https://billing.pars.host/hosting/login), [pulseheberg](https://pulseheberg.com/en/) (recommended) or from [NameCheap](https://education.github.com/pack/offers#namecheap) if you have [GitHub Student Pack](https://education.github.com/pack). Just don't go with ***.ir*** for your own sake!!!
@@ -178,3 +179,10 @@ Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-tr
 ## 📖 Credits
 - [BBR Script](https://github.com/teddysun/across) - The script that makes TCP go kaboom
 - [X-UI Image](https://hub.docker.com/r/enwaiax/x-ui) - The English version of the X-UI Image
+
+## 🍩 Donate
+Support me on developing this repository.
+
+<a href="https://www.buymeacoffee.com/keivanipchihagh"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" height="30px"></a>
+
+Bitcoin (BTC): `bc1qu43fhlqmy7attcwjlhdt6nthe3ulylx7kvmh7r`
