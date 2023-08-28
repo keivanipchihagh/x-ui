@@ -1,6 +1,10 @@
 # x-ui
 I'll explain how to setup the popular **v2ray** platform to bypass *almost* any [GFW](https://en.wikipedia.org/wiki/Great_Firewall) like a knife through butter. If you like the project and found it helpful, please do star and share with others!
 
+<p align="center">
+  <img src="assets/img/cover.jpg" />
+</p>
+
 > **Note**
 > The following instructions require some technical background on Linux, Docker, Certificates and some concepts about networking and VPNs in general. If you have any questions or suggestions, feel free to open an [Issue](https://github.com/keivanipchihagh/x-ui/issues/new) or a Pull request.
 
