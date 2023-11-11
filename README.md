@@ -22,6 +22,7 @@ I'll explain how to setup the popular **v2ray** platform to bypass *almost* any 
 - ⚒️ [Goodby CDN, Hello CFW](https://github.com/keivanipchihagh/x-ui#%EF%B8%8F-goodby-cdn-hello-cfw)
 - ❓ [Q&A](https://github.com/keivanipchihagh/x-ui#-qa)
 - 🎗️ [Benchmarks](https://github.com/keivanipchihagh/x-ui#%EF%B8%8F-benchmarks)
+- 🗒️ [Final Notes](https://github.com/keivanipchihagh/x-ui#-final-notes)
 - 🤝 [Issues and Contributions](https://github.com/keivanipchihagh/x-ui#-issues-and-contributions)
 - 📖 [Credits](https://github.com/keivanipchihagh/x-ui#-credits)
 - 🍩 [Donate](https://github.com/keivanipchihagh/x-ui#-donate)
@@ -36,20 +37,20 @@ I'll explain how to setup the popular **v2ray** platform to bypass *almost* any 
 > There is no need to set any *NS* records if you just want a vanilla VPN, but we will need them later on when working with Cloudflare workers.
 
 ## 🪖 (Optional) Hold on to your Firewalls!
-I always enjoy the extra security on my servers. If you enjoy it too, run `scripts/ufw.sh` to configure a minimal Firewall with default policies (allows ports **22**, **80**, **443** and **54321** for X-UI dashboard).
+I always enjoy the extra security on my servers. If you enjoy it too, run `scripts/ufw.sh` to configure a minimal Firewall with default policies (allows ports **22**, **80**, **443**, and **54321** for X-UI dashboard).
 
 > **Warning**
-> With firewall enabled, you must allow each X-UI inbound port in firewall after you create it, or you won't be able to connect!
+> With the firewall enabled, you must allow each X-UI inbound port in the firewall after you create it, or you won't be able to connect!
 
 ## 🐳 Run it with Docker!
-[Docker](https://www.docker.com/) is the perfect wrapper for VPNs since it's clean and easy-peasy to setup stuff with. Install Docker by running the `scripts/docker.sh` script.
+[Docker](https://www.docker.com/) is the perfect wrapper for VPNs since it's clean and easy to set up stuff with. Install Docker by running the `scripts/docker.sh` script.
 
 > **Note**
 > The script will install *Docker Engine*, *docker-compose* and add them to sudo group.
 
 ## 🚀 Let the dashboard, Begin!
-1. There is a file called `.env.template` which containes placeholders for variables that you must change to your liking. Afterwards, rename the file to `.env`.
-2. Make sure nothing is blocking port **80** and **443** (like NGINX) until the end of this section. If there is any process using it at the time, stop it temporarily.
+1. There is a file called `.env.template` which contains placeholders for variables that you must change to your liking. Afterward, rename the file to `.env`.
+2. Make sure nothing is blocking ports **80** and **443** (like NGINX) until the end of this section. If there is any process using it at the time, stop it temporarily.
 3. Run the `build.sh` script which generates a free SSL certificate using [CertBot](https://certbot.eff.org/) and deploys the **X-UI** container.
 4. All done! Access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>` where the default dashboard port is `54321`.
 
@@ -69,7 +70,7 @@ You can access your dashboard via `<SERVER-IP>:<DASHBOARD-PORT>` or connect to y
 From now on, always access your dashboard via `<DOMAIN>:<DASHBOARD-PORT>` which is secure! Good for you.
 
 ## 📬 Your First Inbound
-Inbounds are for different configurations and protocols, not for every user. You can make infinite number of users on a single Inbound. Now create an Inbound with the following configurations:
+Inbounds are for different configurations and protocols, not for every user. You can make an infinite number of users on a single Inbound. Now create an Inbound with the following configurations:
 - Protocol: `Trojan`
 - Port: `<WHATEVER_JUST_ALLOW_IT_IN_YOUR_FIREWALL_AS_WELL>`
 - Disable insecure encryption: `True`
@@ -79,9 +80,9 @@ Inbounds are for different configurations and protocols, not for every user. You
 - *private.key* file path: `/etc/letsencrypt/live/{DOMAIN}/privkey.pem`
 - Sniffing: `True`
 
-If your certificates are generated correctly, the configurations above will connect on most ISPs. However keep in mind a few things:
+If your certificates are generated correctly, the configurations above will connect on most ISPs. However, keep in mind a few things:
 - Stick with `XTLS` rather than `TLS` if at all possible.
-- Always add `Certificate.crt` and `Private.key` paths for each inbound and enable `TLS`, otherwise you are walking naked on the Internet! I mean it..
+- Always add `Certificate.crt` and `Private.key` paths for each inbound and enable `TLS`, otherwise you are walking naked on the Internet! I mean it...
 - Enable `Sniffing` if available.
 - Always enable `Disable insecure connections`.
 
@@ -128,29 +129,29 @@ network:
 > Don't choose IPv6 as your first/default/primary route, as many ISPs don't yet support it entirely!
 
 ## ❄️ (Optional) Tunneling
-[Tunneling](https://traefik.io/glossary/network-tunneling/) is a nice way to bypass most GFWs on most ISPs. The idea is to not directly connect to your "upstream server" anymore, but to connect to an intermediate server (within you own country and inside a big known data center) that we call a "bridge server" that acts as a tunnel for your traffic. Curious why this method works? Learn more in the [Q&A](https://github.com/keivanipchihagh/x-ui/tree/main#why-does-tunneling-work).
-However there are some things worth mentioning:
+[Tunneling](https://traefik.io/glossary/network-tunneling/) is a nice way to bypass most GFWs on most ISPs. The idea is to not directly connect to your "upstream server" anymore, but to connect to an intermediate server (within your own country and inside a big known data center) that we call a "bridge server" that acts as a tunnel for your traffic. Curious why this method works? Learn more in the [Q&A](https://github.com/keivanipchihagh/x-ui/tree/main#why-does-tunneling-work).
+However, there are some things worth mentioning:
 - 💵 This method is costly, because you now have two servers to pay for!
 - 🚀 Your speed fairly improves, but might become volatile at times.
-- ⛔ This method is advanced, risky and tricky. Approach it only if you know what you are doing!
+- ⛔ This method is advanced, risky, and tricky. Approach it only if you know what you are doing!
 
-Those being said:
-1. Buy a server within the country and inside a known data center, repeat the entire process of brining up X-UI on your new server. (Use a new `<DOMAIN>`)
-2. Create an inbound on your upstream-server (`Websocket` for stable connection) with `TLS` enabled as always.
-3. Replace the configurations from `v2ray/bridge-server.json` with the existing `XRAY Configuration` on your X-UI dashboard settings (Change spesific parts accoring to your upstream inbound).
+That being said:
+1. Buy a server within the country and inside a known data center, and repeat the entire process of bringing up X-UI on your new server. (Use a new `<DOMAIN>`)
+2. Create an inbound on your upstream server (`Websocket` for stable connection) with `TLS` enabled as always.
+3. Replace the configurations from `v2ray/bridge-server.json` with the existing `XRAY Configuration` on your X-UI dashboard settings (Change specific parts according to your upstream inbound).
 
 ## 🚅 Faster TCPs
-Google's upgraded congestion control algorithms will slightly improve your *TCP* connections speed. To apply it on your system, run the `scripts/bbr.sh` script.
+Google's upgraded congestion control algorithms will slightly improve your *TCP* connection speed. To apply it to your system, run the `scripts/bbr.sh` script.
 
 ## 🧱 Take Cover behind CDN
-Your VPN works fine 🍻 and you are happy 😃. However, your server IP is still exposed and *-let me guess-* your VPN doesn't work on some ISPs. If you are unlucky enough, your IP will be blocked on other ISPs in the matter of weeks. This is where CDN comes into play and hides your real IP with a Cloudflare IP. Why don't GFWs block the Cloudflare itself? Learn more in [Q&A](https://github.com/keivanipchihagh/x-ui/tree/main#why-doesnt-gfws-block-cloudflare).
+Your VPN works fine 🍻 and you are happy 😃. However, your server IP is still exposed, and *-let me guess-* your VPN doesn't work on some ISPs. If you are unlucky enough, your IP will be blocked on other ISPs in a matter of weeks. This is where CDN comes into play and hides your real IP with a Cloudflare IP. Why don't GFWs block the Cloudflare itself? Learn more in [Q&A](https://github.com/keivanipchihagh/x-ui/tree/main#why-doesnt-gfws-block-cloudflare).
 
 Make sure your VPN does indeed work before following the next procedure:
 1. On Cloudflare, turn on *Strict SSL/TLS*.
 2. Create a new Inbound with the following configurations:
     - Protocol: `vmess` or `vless`
     - Port: `443`
-    - Transmission: `ws` (`TCP` and `UDP` transmission methods no longer with with CDN)
+    - Transmission: `ws` (`TCP` and `UDP` transmission methods no longer with CDN)
     - TLS: `True` (Add certificates)
 3. On Cloudflare, turn on proxied for both IPv4 and IPv6.
 4. Ping your `<DOMAIN>` and see if the IP changes. This can take a few minutes to settle in.
@@ -161,21 +162,39 @@ CDNs are great, they really are, but CFW (aka. [Cloudflare Workers](https://work
 1. Create a worker from [here](https://workers.cloudflare.com/).
 2. Copy and modify the script `cfw.js` to your worker. Deploy it.
 3. Optionally, to hide your worker address, connect your Worker to a custom domain. (Can take a few hours to take effect)
-4. Modify your client config by replacing the `address`, `SNI` and `request host`, with your worker address and your port to **443**. (If you have a custom domain from step 3, use it instead of the worker address)
+4. Modify your client config by replacing the `address`, `SNI`, and `request host`, with your worker address and your port to **443**. (If you have a custom domain from Step 3, use it instead of the worker address)
 
 > **Note**
 > Cloudflare supports more ports (80, 443, 2052, 2053, 2082, 2083, 2086, 2087, 2095, 2096, 8080, 8443, 8880) that you can use to forward your traffic to X-UI (remember could only use *443* for CDN).
 
 ## ❓ Q&A
-### What does GFW do behind the scene?
+### What does GFW do behind the scenes?
 They do [Packet Drop](https://geneva.cs.umd.edu/posts/fully-encrypted-traffic/en/).
 ### Why does Tunneling work?
-Two simple reasons. First, GFWs are more interested in the traffic heading outside the country. By tunneling, your traffic moves internally half the way. Second, Data Centers are off limit for GFWs, because there are hundreds or thousands of servers running in them that belong to big-ass companies! They wouldn't want to mess with that, huh? If your server is within the same data center as those companies, you get the VIP luxury of high speed and no GFW 🚬😎
-### Why doesn't GFWs block Cloudflare?
+Two simple reasons. First, GFWs are more interested in the traffic heading outside the country. By tunneling, your traffic moves internally half the way. Second, Data Centers are off-limit for GFWs, because there are hundreds or thousands of servers running in them that belong to big-ass companies! They wouldn't want to mess with that, huh? If your server is within the same data center as those companies, you get the VIP luxury of high speed and no GFW 🚬😎
+### Why don't GFWs block Cloudflare?
 Almost all companies are using Cloudflare now. Blocking you will block them as well! However, this doesn't mean not messing around with Cloudflare traffic.
 
 ## 🎗️ Benchmarks
 I'm too old for this shit.
+
+## 🗒️ Final Notes
+
+### Direct Routing
+Some `.ir` websites may not function properly when passed through a VPN. To directly route all `.ir` routes, go to `program` -> `preferences` -> `Routing Settings` -> `Custom` and add the following rule:
+```json
+{
+    "rules": [
+        {
+            "domain": [
+                "regexp:.*\.ir(/|$).*"
+            ],
+            "outboundTag": "direct",
+            "type": "field"
+        }
+    ]
+}
+```
 
 ## 🤝 Issues and Contributions
 Feel free to ask questions via [issue](https://github.com/keivanipchihagh/xui-trojan/issues/new) or add your creative ideas by opening a [pull request](https://github.com/keivanipchihagh/xui-trojan/pulls).
