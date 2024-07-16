@@ -157,15 +157,38 @@ CDNs are great, they really are, but [Cloudflare Workers](https://workers.cloudf
 > Cloudflare workers support more ports (80, 443, 2052, 2053, 2082, 2083, 2086, 2087, 2095, 2096, 8080, 8443, 8880) that you can use to forward your traffic to X-UI (remember could only use *443* for CDN). I used *2053* for this guide.
 
 ## 12. 🎗️ Simple Routing
-It's probably not a good idea to pass all the traffic throught a VPN. Instead, you can use the [Routing](https://www.v2fly.org/config/routing.html#ruleobject) feature to filter the ones you want to pass through. Go to `program` -> `preferences` -> `Routing Settings` -> `Custom` and add the following rule:
+Passing all traffic through a VPN may not be ideal. Here’s why:
+
+* Some websites (e.g., banks, government portals) block traffic from foreign countries
+* VPNs can reduce your internet speed. Therefore, using them for websites that are not blocked is unnecessary 
+* It can also cause your VPN server to be blocked by the GFW
+
+To avoid these issues, you can use the [Routing](https://www.v2fly.org/config/routing.html#ruleobject) feature to add exceptions to your VPN connection.
+
+> [!NOTE]
+> Popular V2ray clients such as [V2rayNG](https://github.com/2dust/v2rayNG) and [Nekoray](https://github.com/MatsuriDayo/nekoray/) support custom routing rules via JSON config, however applying these routing rules may require slightly different steps in various clients. Detailed instructions for using the following config along with required `*.dat` files are provided [here](https://github.com/bootmortis/iran-hosted-domains/blob/main/README.md#usage).
+
 ```json
 {
     "rules": [
         {
             "domain": [
-                "regexp:.*\.ir(/|$).*"
+                "regexp:.*\.ir(/|$).*",
+                "ext:iran.dat:all"
+            ],
+            "ip": [
+                "geoip:private",
+                "geoip:ir",
+                "geoip:cn"
             ],
             "outboundTag": "direct",
+            "type": "field"
+        },
+        {
+            "domain": [
+                "ext:iran.dat:ads"
+            ],
+            "outboundTag": "block",
             "type": "field"
         }
     ]
